@@ -1,0 +1,17 @@
+#!/bin/sh
+
+FIRST_LINE=`head -n1 $1`
+
+# check whether the commit message starts with a particular string, e.g. [GITHOOK] (the [] must be escaped)
+if ! [[ $FIRST_LINE == \[GITHOOK\]* ]];then
+    echo "Your commit message must start with feature id '[GITHOOK]'"
+    exit 1
+fi
+
+# check if the first line of the commit message is shorter than 50 characters
+title= $FIRST_LINE | head -n 1
+
+if [ echo $title | wc -c ] > 50;then
+    echo "The first line of the commit message (the title) must not be longer than 50 characters"
+    exit 1
+fi
