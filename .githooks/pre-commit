@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Simple hook to check the username/email of a user
+# this is less of a security feature than of a error-prevention feature
+# in a previous project, only certain commiters were allowed and thus a re-write of all
+# commits from foreign commiters was required sometimes
+#
+# -P is the Perl syntax to make escaping easier; -o only takes the matched part of the string
+USER_NAME=$(git config --list | grep "user.name" | grep -P -o '(?<=\=)(.*)')
+USER_EMAIL=$(git config --list | grep "user.email" | grep -P -o '(?<=\=)(.*)')
+VALIDATOR="accenture.com"
+
+if ! [[ $USER_EMAIL == *$VALIDATOR* ]];then
+	echo "Your user email must contain" $VALIDATOR
+	exit 1
+fi
+
